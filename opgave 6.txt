@@ -1,0 +1,100 @@
+main-clock.c:
+
+#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h" 		// Input/output library for this course
+
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "clock.h"
+
+int main()
+{
+	uart_init(9600);
+	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+	configureTimer15();
+
+	uint32_t counter_p = 0;
+
+	while(1){
+		if (counter != counter_p) {
+			//printf("%lu\n", counter);
+			printf("%d\n",(int)counter);
+		}
+		counter_p = counter;
+	}
+}
+
+
+
+
+clock.c:
+
+#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h" 		// Input/output library for this course
+
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "ansi.h"
+#include <stm32f30x.h>
+
+volatile uint32_t counter = 0;
+
+void TIM1_BRK_TIM15_IRQHandler(void) {
+	counter++;
+	TIM15->SR &= ~(0x0001);
+}
+
+void configureTimer15() {
+    // Enable clock line to timer 15
+    RCC->APB2ENR |= RCC_APB2ENR_TIM15EN;
+
+    // Configure timer 15 (CR1 settings)
+    TIM15->CR1 &= 0xF400;  // Reset CR1 to default settings
+
+    // Configure CR1 with the specified settings
+    TIM15->CR1 |= 0 << 11;  // No UIFREMAP remapping
+    TIM15->CR1 |= 0 << 8;  // No clock division (CKD)
+    TIM15->CR1 |= 0 << 7;  // Non-buffered auto-reload preload (ARPE)
+    TIM15->CR1 |= 0 << 3;  // One-pulse mode disabled (OPM)
+    TIM15->CR1 |= 0 << 2;  // Any update request source (URS)
+    TIM15->CR1 |= 0 << 1;  // Update events enabled (UDIS)
+
+    // Set the pre-scale and reload value
+    uint32_t sysClockFreq = 630000;  // Assuming a system clock frequency of 64 MHz
+    uint32_t timerFreq = 1000;  // Timer frequency of 10 kHz (0.01 seconds)
+    uint32_t prescaler = (sysClockFreq / timerFreq) - 1;
+    uint16_t reloadValue = 65535;  // 16-bit timer
+
+    TIM15->PSC = 99999;  // Set prescale value
+    TIM15->ARR = 99;  // Set reload value
+
+    TIM15->DIER |= 1;
+    NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 2);
+    NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
+
+    // Enable the timer
+    TIM15->CR1 |= TIM_CR1_CEN;  // Set the counter enable bit
+}
+
+
+
+
+clock.h:
+
+#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h" 		// Input/output library for this course
+
+#ifndef CLOCK_H_
+#define CLOCK_H_
+
+volatile uint32_t counter;
+
+void TIM1_BRK_TIM15_IRQHandler(void);
+void configureTimer15();
+
+#endif /* CLOCK_H_ */
+
+
+
