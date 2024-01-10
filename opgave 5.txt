@@ -1,3 +1,10 @@
+//During and just after reset, the alternate functions are not active and most of the I/O ports
+are configured in input floating mode.
+
+//signal line is high.
+
+
+
 MAIN:
 
 #include "stm32f30x_conf.h" // STM32 config
