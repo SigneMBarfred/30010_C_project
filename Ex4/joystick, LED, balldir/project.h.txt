@@ -1,0 +1,67 @@
+#ifndef ANSI_H
+#define ANSI_H
+
+#include <stdint.h>
+#include <stdio.h>
+
+//Ports for joystick C0, A4, B5, C1, B0
+void setPinIn(GPIO_TypeDef *port, unsigned char pin);
+
+void setPinOut(GPIO_TypeDef *port, unsigned char pin);
+
+void setPin(GPIO_TypeDef *port, uint8_t pin, uint8_t value);
+
+void setPort(GPIO_TypeDef *port, uint8_t pins, uint8_t value);
+
+void setupJoystickPins();
+
+void setupLEDPins();
+
+uint16_t readPort(GPIO_TypeDef *port, uint16_t pins);
+
+char readSinglePin(GPIO_TypeDef *port, uint8_t pin);
+
+uint8_t readJoy();
+
+void setLED(uint8_t color);  //..0RGB
+
+typedef struct {
+	int32_t pos_x,pos_y; //position
+	int32_t v_x,v_y; //velocity
+}vector_t;
+int ballUpdate(vector_t *ball);
+
+void setdir(vector_t *ball);
+
+
+void clrscrn();
+void clreol();
+void gotoxy(int x, int y);
+void underline(uint8_t on);
+void blink(uint8_t on);
+void inverse(uint8_t on);
+int setCursorPos(); //this function still doesnt accept user input
+void resetFormat();
+void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const char *style, const char *title);
+void box(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const char *style, const char *text);
+
+void fgcolor(uint8_t foreground);
+void bgcolor(uint8_t background);
+void color(uint8_t foreground, uint8_t background);
+
+/* Exported functions -------------------------------------------------- */
+uint8_t readJoy();
+
+
+void configureADC();
+uint16_t measureADC(uint8_t channel);
+/*void xp(vector_t *ball);
+void xm(vector_t *ball);
+void yp(vector_t *ball);
+void ym(vector_t *ball);
+void zero(vector_t *ball);*/
+
+#endif	// ANSI_H
+
+
+
