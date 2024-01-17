@@ -10,6 +10,10 @@
 #include "stdlib.h"
 #include "ball.h"
 #include <string.h> //for the draw window function
+#include "bosskey.h"
+
+
+
 
 
 int main()
@@ -42,36 +46,62 @@ int main()
 	static int count = 0;
 	//now, we will delete the ball each time we wish to print it in a new position. this is accomplished in below while loop
 
-
-	while(1){
-		a = readJoy();
-		setdir(&Ball);
-		potf(&Ball);
-		//printf("%d\n ", a);
-		setLED(a);
-
-
-		drawBall(&Ball);
-		ballUpdate(&Ball); //updates ball, velocity and count
-
-		for (int i = 0; i < 150000; ++i) { //delay so the ball moves at slower speed
-		asm("nop"); //no operation instruction on assembly level
-		        }
-
-		printf("%c",127); //ansi code to delete the ball
-		printf("%c[H", ESC); //home cursor
-
-		box(60, 18, 80, 23, "simple","Hit Count:\n");
-		gotoxy(70,21);
-		printf("%d",ballUpdate(&Ball));
-
-
-
-	}
-
-
 	//make box inside window
 	box(60, 18, 80, 23, "simple","Hit Count");
 	//update counter
 
+	int p = 0;
+	int p_p = 0;
+	int a_p = 0;
+
+	while(1){
+		a = readJoy();
+
+		if(a_p != a){
+			if ((p_p == 1) && (a == 64)){
+				p = 0;
+			}
+			else if((a == 64) && (p_p == 0)){
+				p = 1;
+			}
+		}
+		a_p = a;
+		p_p = p;
+
+		//printf("%d %d %d", p, p_p, a_p);
+		//printf("%d", p_p);
+
+		if(p == 1){
+			//clrscrn();
+			if(a_p == 64){
+				clrscrn();
+			}
+			bosskey();
+
+		} else{
+			if(a_p == 64){
+				clrscrn();
+				window(2, 2, 140, 40, "double", "|Ex. 4 - WINDOW|");
+			}
+			//clrscrn_once();
+			setdir(&Ball);
+			potf(&Ball);
+			//printf("%d\n ", a);
+			setLED(a);
+
+			drawBall(&Ball);
+			ballUpdate(&Ball); //updates ball, velocity and count
+
+			for (int i = 0; i < 150000; ++i) { //delay so the ball moves at slower speed
+				asm("nop"); //no operation instruction on assembly level
+			}
+
+			printf("%c",127); //ansi code to delete the ball
+			printf("%c[H", ESC); //home cursor
+
+			box(60, 18, 80, 23, "simple","Hit Count:\n");
+			gotoxy(70,21);
+			printf("%d",ballUpdate(&Ball));
+		}
+	}
 }
