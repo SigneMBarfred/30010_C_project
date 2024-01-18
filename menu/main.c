@@ -8,7 +8,7 @@
 
 int main()
 {
-	uart_init(9600);
+	uart_init(115200);
 	uint8_t choice;
 	setupJoystickPins();
 
@@ -17,14 +17,21 @@ int main()
 
 
 	clrscrn();
-	printf("Main menu\n");
+	printf("\x1b[33m");
+	window(50, 20, 100, 30, "simple", "Main Menu");
+	resetFormat();
 
-	printf("Please select option with joystick \n");
-
+	gotoxy(58,21);
+	printf("Please select option with joystick: \n");
+	gotoxy(62,23);
 	printf("UP - Input player name \n");
+	gotoxy(62,24);
 	printf("RIGHT - Select difficulty\n");
+	gotoxy(62,25);
 	printf("DOWN - View high scores\n");
+	gotoxy(62,26);
 	printf("CENTER - Start game\n");
+	gotoxy(62,27);
 	printf("LEFT - Quit programme\n");
 
 	while(1){

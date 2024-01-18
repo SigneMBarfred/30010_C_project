@@ -41,8 +41,8 @@ char getKeyboardInput(){
 //	printf("\nYour choosen name is: %s", playerName);
 
 
-    // creating character buffer of n(here 20) characters
-    char buf[20];
+    // creating character buffer 25 chars
+    char buf[25];
 
     // character pointer for the address of the first character
     char *ptr;
@@ -52,11 +52,9 @@ char getKeyboardInput(){
 
     // assigning the address of the first character to ptr
     ptr = buf;
-    printf("Enter player name: ");
 
     // Logic to take input of n characters using a while loop
     while ((ch = uart_get_char()) != '\r' && ch != EOF) {
-        // *ptr++ = (char)ch;
         *ptr++ = ch;
     }
     *ptr++ = 0;
@@ -64,7 +62,6 @@ char getKeyboardInput(){
         printf("EOF encountered\n");
     }
     gotoxy(4,5);
-
-	return buf[3];
+	return buf;
 
 }

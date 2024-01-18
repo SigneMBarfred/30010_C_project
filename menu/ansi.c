@@ -105,7 +105,7 @@ void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const char *style, c
 
 	//figure out characteristics of the title and give it position central to horisontal span
 	int titleLen = strlen(title);
-	int titlePos = (x2-x1 - titleLen) /2; //so we get first the length of horisontal border and then we figure out what length is left when we have made space for the title. that is then divided by 2
+	int titlePos = (x2-x1 - titleLen-2) /2; //so we get first the length of horisontal border and then we figure out what length is left when we have made space for the title. that is then divided by 2
 
 
 	// --------- construct the box ----------
