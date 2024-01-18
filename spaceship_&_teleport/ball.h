@@ -13,6 +13,8 @@
 #include "stdio.h"
 #include <stdlib.h>
 #include "math.h"
+#include "joystick.h"
+#include "ansi.h"
 
 typedef struct {
 	int32_t pos_x,pos_y; //position
@@ -24,6 +26,7 @@ void drawBall(vector_t *ball);
 void deleteBall(vector_t *ball);
 void teleport(vector_t *ball);
 void drawWormhole();
+void setdir(vector_t *ball);
 
 
 #endif /* BALL_H_ */
