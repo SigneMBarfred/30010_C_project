@@ -75,22 +75,17 @@ void initialiseTimer2(){
 		TIM2->CCMR2 |=  TIM_OCPreload_Enable;
 		TIM2->CCR3 = 99 / 2; // Set duty cycle to 50 %
 
-
-
 }
 
 
 
 void setBuzzerPin(){
 	RCC->AHBENR |= RCC_AHBPeriph_GPIOB;
- // Set pin PA0 to input
 	GPIOB->MODER &= ~(0x00000003 << (10 * 2)); // Clear mode register
 	GPIOB->MODER |=  (0x00000002 << (10 * 2)); // Set mode register (0x00 –
 	   //Input, 0x01 - Output, 0x02 - Alternate Function, 0x03 - Analog in/out)
 	GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_1);
-	//GPIOB->PUPDR &= ~(0x00000003 << (10 * 2)); // Clear push/pull register
-	//GPIOB->PUPDR |=  (0x00000002 << (10 * 2)); // Set push/pull register (0x00 -
-		//No pull, 0x01 - Pull-up, 0x02 - Pull-down)
+
 }
 
 

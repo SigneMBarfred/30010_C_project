@@ -44,17 +44,17 @@ void setupLEDPins(){
 }
 
 void setLED(uint8_t color){  //..0RGB
-	color = ~color;
+	color = ~color; //we tell MCU what LEDs not to light up
 
 	setPin(LED_R, (color & (1 << 2)));
 	setPin(LED_G, (color & (1 << 1)));
 	setPin(LED_B, (color & 1));
 
-	if (readJoy() == (1 << 3)){
+	if (readJoy() == (1 << 3)){ //cyan
 		setPin(LED_G, (color & (1 << 3)));
 		setPin(LED_B, (color & (1 << 3)));
 	}
-	if (readJoy() == (1 << 4)){
+	if (readJoy() == (1 << 4)){ //magenta
 		setPin(LED_R, (color & (1 << 4)));
 		setPin(LED_B, (color & (1 << 4)));
 	}

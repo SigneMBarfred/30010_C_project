@@ -20,6 +20,8 @@ int main(void){
 
 	uart_init(250000); //initialise receiver at baud 9600
 	setupJoystickPins();
+	configureADC();
+
 
 
 
@@ -52,6 +54,7 @@ int main(void){
 	//now, we will delete the ball each time we wish to print it in a new position. this is accomplished in below while loop
     while (1) {
     	setdir(&Ball);
+    	potf(&Ball);
     	teleport(&Ball);
         drawBall(&Ball);
 

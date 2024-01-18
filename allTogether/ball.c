@@ -28,28 +28,58 @@ void setdir(vector_t *ball){ 		//up = 2^0, down = 2^1, left = 2^2, right= 2^3, c
 	uint8_t readball = readJoy();
 	setupLEDPins();
 	setLED(readball);
-	if(readball == 1){
+	if(readball == 1){ //go up
 		ball->v_x = 0;
 		ball->v_y = -1 <<14 ;
 
 	}
-	else if(readball == (1 << 1)){
+	else if(readball == (1 << 1)){ //go down
 		ball->v_x = 0;
 		ball->v_y = 1 << 14;
 	}
-	else if(readball == (1 << 2)){
+	else if(readball == (1 << 2)){ //go left
 		ball->v_x = -1 << 14;
 		ball->v_y = 0;
 	}
-	else if(readball == (1 << 3)){
+	else if(readball == (1 << 3)){ //go right
 		ball->v_x = 1 << 14;
 		ball->v_y = 0;
 	}
-	else if(readball == (1 << 4)){
+	else if(readball == (1 << 4)){ //stationary ship
 		ball->v_x = 0;
 		ball->v_y = 0;
 	}
 }
+
+
+void potf(vector_t *ball){
+	uint16_t adcValuePA0 = measureADC(ADC_Channel_1); // Channel for PA0
+	uint16_t adcValuePA1 = measureADC(ADC_Channel_2); // Channel for PA1
+	if(adcValuePA0 >= 2500){ //go right
+		ball->v_x = 1 << 14;
+		//ball->v_y = 0;
+	}
+	else if(adcValuePA0 <= 1500){ //go left
+		ball->v_x = -1 << 14;
+		//ball->v_y = 0;
+	}
+	else if(adcValuePA1 >= 2500){
+		//ball->v_x = 0;
+		ball->v_y = -1 << 14; //go up
+	}
+	else if(adcValuePA1 <= 1500){
+		//ball->v_x = 0;
+		ball->v_y = 1 << 14; //go down
+	}
+
+	else if(adcValuePA0 >= 1501, adcValuePA0 <= 2499, adcValuePA1 >= 1501, adcValuePA1 <= 2499){
+		ball->v_x = 0;
+		ball->v_y = 0;
+	}
+	//printf("ADC PA0: %04u, ADC PA1: %04u\r", adcValuePA0, adcValuePA1);
+
+}
+
 
 
 

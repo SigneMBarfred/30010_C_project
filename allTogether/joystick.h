@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+
 //Ports for joystick C0, A4, B5, C1, B0
 void setPinIn(GPIO_TypeDef *port, unsigned char pin);
 
@@ -23,7 +24,6 @@ void setPort(GPIO_TypeDef *port, uint8_t pins, uint8_t value);
 
 void setupJoystickPins();
 
-
 uint16_t readPort(GPIO_TypeDef *port, uint16_t pins);
 
 char readSinglePin(GPIO_TypeDef *port, uint8_t pin);
@@ -31,6 +31,9 @@ char readSinglePin(GPIO_TypeDef *port, uint8_t pin);
 uint8_t readJoy();
 void deSetPinIn();
 void deInitJoystickPins();
+void configureADC();
+uint16_t measureADC(uint8_t channel);
+
 
 
 #endif /* JOYSTICK_H_ */

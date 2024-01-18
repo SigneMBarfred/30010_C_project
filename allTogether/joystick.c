@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 
+
 #define RIGHT_JOY GPIOC, 0
 #define UP_JOY GPIOA, 4
 #define CENTER_JOY GPIOB, 5
@@ -55,9 +56,9 @@ void setupJoystickPins(){
 }
 
 
-uint16_t readPort(GPIO_TypeDef *port, uint16_t pins){
-	return port -> IDR & pins;
-}
+	uint16_t readPort(GPIO_TypeDef *port, uint16_t pins){
+		return port -> IDR & pins;
+	}
 
 char readSinglePin(GPIO_TypeDef *port, uint8_t pin){
 	uint16_t reading = port -> IDR & (1 << pin);
@@ -76,5 +77,33 @@ uint8_t readJoy(){
 }
 
 
+// Function to configure ADC
+void configureADC() {
+    RCC->CFGR2 &= ~RCC_CFGR2_ADCPRE12; // Clear ADC12 prescaler bits
+    RCC->CFGR2 |= RCC_CFGR2_ADCPRE12_DIV6; // Set ADC12 prescaler to 6
+    RCC->AHBENR |= RCC_AHBPeriph_ADC12; // Enable clock for ADC12
+
+    ADC1->CR = 0x00000000; // Clear CR register
+    ADC1->CFGR &= 0xFDFFC007; // Clear ADC1 config register
+    ADC1->SQR1 &= ~ADC_SQR1_L; // Clear regular sequence register 1
+
+    ADC1->CR |= 0x10000000; // Enable internal ADC voltage regulator
+    for (int i = 0; i < 1000; i++) {} // Wait for about 16 microseconds
+
+    ADC1->CR |= 0x80000000; // Start ADC1 calibration
+    while (!(ADC1->CR & 0x80000000)); // Wait for calibration to finish
+    for (int i = 0; i < 100; i++) {} // Wait for a little while
+
+    ADC1->CR |= 0x00000001; // Enable ADC1 (0x01 - Enable, 0x02 - Disable)
+    while (!(ADC1->ISR & 0x00000001)); // Wait until ready
+}
+
+// Function to perform ADC measurement on a specific channel
+uint16_t measureADC(uint8_t channel) {
+    ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_1Cycles5);
+    ADC_StartConversion(ADC1);
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0);
+    return ADC_GetConversionValue(ADC1);
+}
 
 
