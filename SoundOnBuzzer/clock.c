@@ -58,8 +58,8 @@ void initialiseTimer2(){
 	    // Configure timer 2 (CR1 settings)
 	    TIM2->CR1 &= 0xF400;  // Reset CR1 to default settings
 
-	    TIM2->PSC = 1;  // Set prescale value
-	    TIM2->ARR = 99;  // Set reload value
+	    TIM2->PSC = 64;  // Set prescale value
+	    TIM2->ARR = 999;  // Set reload value
 
 	    // Enable the timer
 	    TIM2->CR1 |= TIM_CR1_CEN;  // Set the counter enable bit
@@ -96,7 +96,7 @@ void setBuzzerPin(){
 
 
 void setFreq(uint16_t freq) {
-    uint32_t reload = 72e6 / freq;
+    uint32_t reload = 64e6 / freq;
 
     TIM2->ARR  = reload;   // Set reload value
     TIM2->CCR3 = reload/2; // Set compare register

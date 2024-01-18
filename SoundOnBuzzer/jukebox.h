@@ -9,6 +9,7 @@
 #define JUKEBOX_H_
 
 int melody1();
-
+int loseSong();
+int successSong();
 
 #endif /* JUKEBOX_H_ */

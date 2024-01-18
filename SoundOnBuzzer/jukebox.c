@@ -30,21 +30,85 @@ int melody1(){
 
 
 
-	while(1){//inefficient (busy loop)
+	while(noteIndex < lengthMelody){//inefficient (busy loop)
 		uint16_t newFreq = marioMelody[noteIndex];
 		setFreq(newFreq);
 		for(noteIndex = 0; noteIndex < lengthMelody; noteIndex++ ){ //loop through notes
 			while (c < (marioDuration[noteIndex]*10)){}
-			newFreq = marioMelody[noteIndex+1];
+			newFreq = marioMelody[noteIndex+1]*10;
 			setFreq(newFreq);
 			c = 0;
 
 		}
-
+	 // Dis-able the timer2 (stop signal to buzzer)
+	    TIM2->CR1 &= ~TIM_CR1_CEN;  // Set the counter enable bit
 	}
 
 
 }
 
+int loseSong(){
+	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; //enable line to buzzer
+	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+
+	configureTimer15();
+	initialiseTimer2();
+	setBuzzerPin();
+
+	uint16_t noteIndex = 0;
+	c = 0;
+	int lengthLoseMelody = sizeof(loseMelody)/sizeof(loseMelody[0]); //amount of bytes of array divided by amount of bytes pr element
+
+
+
+	while(noteIndex < lengthLoseMelody){//inefficient (busy loop)
+		uint16_t newFreq = loseMelody[noteIndex];
+		setFreq(newFreq);
+		for(noteIndex = 0; noteIndex < lengthLoseMelody; noteIndex++ ){ //loop through notes
+			while (c < (loseDuration[noteIndex]*10)){}
+			newFreq = loseMelody[noteIndex+1]*10;
+			setFreq(newFreq);
+			c = 0;
+
+		}
+	 // Dis-able the timer2 (stop signal to buzzer)
+		TIM2->CR1 &= ~TIM_CR1_CEN;  // Set the counter enable bit
+	}
+
+
+
+}
+
+int successSong(){
+	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; //enable line to buzzer
+	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+
+	configureTimer15();
+	initialiseTimer2();
+	setBuzzerPin();
+
+	uint16_t noteIndex = 0;
+	c = 0;
+	int lengthSuccessMelody = sizeof(successMelody)/sizeof(successMelody[0]); //amount of bytes of array divided by amount of bytes pr element
+
+
+
+	while(noteIndex < lengthSuccessMelody){//inefficient (busy loop)
+		uint16_t newFreq = successMelody[noteIndex];
+		setFreq(newFreq);
+		for(noteIndex = 0; noteIndex < lengthSuccessMelody; noteIndex++ ){ //loop through notes
+			while (c < (successDuration[noteIndex]*10)){}
+			newFreq = successMelody[noteIndex+1]*100;
+			setFreq(newFreq);
+			c = 0;
+
+		}
+	 // Dis-able the timer2 (stop signal to buzzer)
+		TIM2->CR1 &= ~TIM_CR1_CEN;  // Set the counter enable bit
+	}
+
+
+
+}
 
 //

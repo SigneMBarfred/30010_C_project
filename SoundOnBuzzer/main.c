@@ -8,7 +8,12 @@
 
 int main()
 {
-	uart_init(9600);
-	melody1();
+	uart_init(115200);
+	//melody1();
+	loseSong();
+
+
+
+	successSong();
 
 }
