@@ -8,13 +8,14 @@
 #include "stdlib.h"
 #include "ball.h"
 #include <string.h> //for the draw window function
-
+#include "background.h"
+#include "joystick.h"
 
 
 int main(void){
 
-	uart_init(115200); //initialise receiver at baud 9600
-
+	uart_init(215200); //initialise receiver at baud 9600
+	setupJoystickPins();
 
 	//define a ball
 	vector_t Ball;
@@ -29,31 +30,27 @@ int main(void){
 	resetFormat(); //undoes whatever formatting was activated so that next run is "normal"
 
 	//make window that fits terminal
+
 	window(2, 2, 140, 40, "double", "|IO DEFENDER|");
-
-
-
-	//printf("Start position of ball: (%d, %d)\n", Ball.pos_x >> 14, Ball.pos_y >> 14);
-	//printf("velocity: (%d, %d)\n", Ball.v_x >> 14, Ball.v_y >> 14);
+	createMoon(2, 2, 140, 40, 124, 166);
 
 
 	// Update the ball using the function
 	ballUpdate(&Ball);
-	//printf("updated position of ball: (%d, %d)\n", Ball.pos_x >> 14, Ball.pos_y >> 14);
 
 	//draw ball
 	drawBall(&Ball);
 	static int count = 0;
 	//now, we will delete the ball each time we wish to print it in a new position. this is accomplished in below while loop
     while (1) {
+    	setdir(&Ball);
     	teleport(&Ball);
         drawBall(&Ball);
-        ballUpdate(&Ball); //updates ball, velocity and count
 
+        ballUpdate(&Ball); //updates ball, velocity and count
         for (int i = 0; i < 100000; ++i) { //delay so the ball moves at slower speed
             asm("nop"); //no operation instruction on assembly level
         }
-
 
         deleteBall(&Ball);
         printf("%c[H", ESC); //home cursor
@@ -62,6 +59,9 @@ int main(void){
         gotoxy(70,21);
     	printf("%d",ballUpdate(&Ball)); //ballupdate outputs a hit count
     	drawWormhole();
+    	createStars(2, 2, 140, 140, 221);
+    	createSurface(2,2,140,40,124);
+
     }
 
 

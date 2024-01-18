@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include "math.h"
 #include "ansi.h"
+#include "joystick.h"
 
 
 //first: define the structure for ball
@@ -18,6 +19,33 @@ typedef struct {
 	int32_t pos_x,pos_y; //position
 	int32_t v_x,v_y; //velocity
 }vector_t;
+//
+
+void setdir(vector_t *ball){ 		//up = 2^0, down = 2^1, left = 2^2, right= 2^3, center = 2^4
+	uint8_t readball = readJoy();
+	if(readball == 1){
+		ball->v_x = 0;
+		ball->v_y = -1 <<14 ;
+	}
+	else if(readball == (1 << 1)){
+		ball->v_x = 0;
+		ball->v_y = 1 << 14;
+	}
+	else if(readball == (1 << 2)){
+		ball->v_x = -1 << 14;
+		ball->v_y = 0;
+	}
+	else if(readball == (1 << 3)){
+		ball->v_x = 1 << 14;
+		ball->v_y = 0;
+	}
+	else if(readball == (1 << 4)){
+		ball->v_x = 0;
+		ball->v_y = 0;
+	}
+}
+
+
 
 int ballUpdate(vector_t *ball){ //scale factor is mentioned in exc desc; meaning?
 	static int count;
@@ -30,7 +58,7 @@ int ballUpdate(vector_t *ball){ //scale factor is mentioned in exc desc; meaning
         count ++;
     }
 
-    if (ycoo <= 2+2  || ycoo >= 40-5) {
+    if (ycoo <= 2+2  || ycoo >= 40-9) {
        ball->v_y *= -1;
        count++;
     }
@@ -54,7 +82,7 @@ void drawBall(vector_t *ball){//based on ascii art from http://www.ascii-art.de/
     gotoxy(xcoo,ycoo+1);
     puts("  /  \\  ");
     gotoxy(xcoo,ycoo+2);
-    puts(" /|()|\\ ");
+    puts(" /|{}|\\ ");
     gotoxy(xcoo,ycoo+3);
     puts("/_|__|_\\" );
 }
@@ -88,7 +116,7 @@ void drawWormhole(){
 	gotoxy(worm1x-1,worm1y-1);
 	printf("  %c ",196);
 	gotoxy(worm1x-1,worm1y);
-	printf("(   )");
+	printf("( O )");
 	gotoxy(worm1x-1,worm1y+1);
 	printf("  %c ",196);
 	blink(off);
@@ -117,7 +145,7 @@ void teleport(vector_t *ball){
 		gotoxy(worm1x-1,worm1y-1);
 		printf("  %c ",196);
 		gotoxy(worm1x-1,worm1y);
-		printf("(   )");
+		printf("( @ )");
 		gotoxy(worm1x-1,worm1y+1);
 		printf("  %c ",196);
 
@@ -125,7 +153,7 @@ void teleport(vector_t *ball){
 		gotoxy(worm2x-1,worm2y-1);
 		printf("  %c ",196);
 		gotoxy(worm2x-1,worm2y);
-		printf("(   )");
+		printf("( O )");
 		gotoxy(worm2x-1,worm2y+1);
 		printf("  %c ",196);
 		setRed(0);
@@ -148,6 +176,4 @@ void teleport(vector_t *ball){
 		printf("t: %d", teleportations);
 
 	}
-
-
 }
