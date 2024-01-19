@@ -12,6 +12,9 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "stm32f30x_conf.h" // STM32 config
+#include "30010_io.h"
+
 //Ports for joystick C0, A4, B5, C1, B0
 void setPinIn(GPIO_TypeDef *port, unsigned char pin);
 
@@ -21,8 +24,7 @@ void setPin(GPIO_TypeDef *port, uint8_t pin, uint8_t value);
 
 void setPort(GPIO_TypeDef *port, uint8_t pins, uint8_t value);
 
-void setupJoystickPins();
-
+void setupJoystickPins(uint8_t on);
 
 uint16_t readPort(GPIO_TypeDef *port, uint16_t pins);
 

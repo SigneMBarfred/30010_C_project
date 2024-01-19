@@ -65,7 +65,6 @@ void resetFormat(){
 //a function that takes two sets of coo and style as well as title input and then writes out a boxed area in terminal
 void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, const char *style, const char *title){
 
-	clrscrn(); //start from fresh
 	gotoxy(x1,y1); //move cursor to starting position
 	// we can take a number of different styles. each has a set of vertical/horistonal ascii chars
 	// therefore: define these vertical and horistonal variables so we can assign them an ascii char for each style

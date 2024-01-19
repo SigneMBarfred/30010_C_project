@@ -42,20 +42,27 @@
 		port -> ODR &= value;	//Setting the pins in the array
 	}
 
-	void setupJoystickPins(){
-		RCC-> AHBENR |= RCC_AHBPeriph_GPIOA;
-		RCC-> AHBENR |= RCC_AHBPeriph_GPIOB;
-		RCC-> AHBENR |= RCC_AHBPeriph_GPIOC;
+	void setupJoystickPins(uint8_t on){ //by demaning input "on" one can disable (0) /enable (1) as needed
 
-		setPinIn(UP_JOY);
-		setPinIn(GPIOB, 0);
-		setPinIn(GPIOB, 5);
-		setPinIn(GPIOC, 0);
-		setPinIn(GPIOC, 1);
+		if(on){
+			RCC-> AHBENR |= RCC_AHBPeriph_GPIOA;
+			RCC-> AHBENR |= RCC_AHBPeriph_GPIOB;
+			RCC-> AHBENR |= RCC_AHBPeriph_GPIOC;
+			setPinIn(UP_JOY);
+			setPinIn(GPIOB, 0);
+			setPinIn(GPIOB, 5);
+			setPinIn(GPIOC, 0);
+			setPinIn(GPIOC, 1);
+		}
+		else{ //disable
+			RCC->AHBENR &= ~RCC_AHBPeriph_GPIOA;  // Clear
+			RCC->AHBENR &= ~RCC_AHBPeriph_GPIOB;
+			RCC->AHBENR &= ~RCC_AHBPeriph_GPIOC;
+		}
 	}
 
 
-	uint16_t readPort(GPIO_TypeDef *port, uint16_t pins){
+	uint16_t readPort(GPIO_TypeDef *port, uint16_t pins){ //read state of pins
 		return port -> IDR & pins;
 	}
 
