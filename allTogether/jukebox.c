@@ -11,16 +11,16 @@
 
 volatile uint32_t c = 0; //flag, global variable
 
-void TIM1_BRK_TIM15_IRQHandler(void) { //interrupt handler
+void TIM1_UP_TIM16_IRQHandler(void) { //interrupt handler
 	c++; //increment c when interrupt
-	TIM15->SR &= ~(0x0001); //reset
+	TIM16->SR &= ~(0x0001); //reset
 }
 
 int melody1(){
 	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
-	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+	RCC->APB2ENR |= RCC_APB2Periph_TIM16; // Enable clock line to timer 16;
 
-	configureTimer15();
+	configureTimer16();
 	initialiseTimer2();
 	setBuzzerPin();
 
@@ -49,9 +49,9 @@ int melody1(){
 
 int loseSong(){
 	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; //enable line to buzzer
-	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+	RCC->APB2ENR |= RCC_APB2Periph_TIM16; // Enable clock line to timer 16;
 
-	configureTimer15();
+	configureTimer16();
 	initialiseTimer2();
 	setBuzzerPin();
 
@@ -81,9 +81,9 @@ int loseSong(){
 
 int successSong(){
 	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; //enable line to buzzer
-	RCC->APB2ENR |= RCC_APB2Periph_TIM15; // Enable clock line to timer 15;
+	RCC->APB2ENR |= RCC_APB2Periph_TIM16; // Enable clock line to timer 16;
 
-	configureTimer15();
+	configureTimer16();
 	initialiseTimer2();
 	setBuzzerPin();
 

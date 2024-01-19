@@ -18,20 +18,20 @@
 
 
 
-void configureTimer15() {
-    // Enable clock line to timer 15
-    RCC->APB2ENR |= RCC_APB2ENR_TIM15EN;
+void configureTimer16() {
+    // Enable clock line to timer 16
+    RCC->APB2ENR |= RCC_APB2ENR_TIM16EN;
 
-    // Configure timer 15 (CR1 settings)
-    TIM15->CR1 &= 0xF400;  // Reset CR1 to default settings
+    // Configure timer 16 (CR1 settings)
+    TIM16->CR1 &= 0xF400;  // Reset CR1 to default settings
 
     // Configure CR1 with the specified settings
-    TIM15->CR1 |= 0 << 11;  // No UIFREMAP remapping
-    TIM15->CR1 |= 0 << 8;  // No clock division (CKD)
-    TIM15->CR1 |= 0 << 7;  // Non-buffered auto-reload preload (ARPE)
-    TIM15->CR1 |= 0 << 3;  // One-pulse mode disabled (OPM)
-    TIM15->CR1 |= 0 << 2;  // Any update request source (URS)
-    TIM15->CR1 |= 0 << 1;  // Update events enabled (UDIS)
+    TIM16->CR1 |= 0 << 11;  // No UIFREMAP remapping
+    TIM16->CR1 |= 0 << 8;  // No clock division (CKD)
+    TIM16->CR1 |= 0 << 7;  // Non-buffered auto-reload preload (ARPE)
+    TIM16->CR1 |= 0 << 3;  // One-pulse mode disabled (OPM)
+    TIM16->CR1 |= 0 << 2;  // Any update request source (URS)
+    TIM16->CR1 |= 0 << 1;  // Update events enabled (UDIS)
 
 
 	/*to get interrupt signal at every milisec
@@ -39,15 +39,15 @@ void configureTimer15() {
 	 * and internal clock is at 64MHz
 	 * prescale the clock freq with 64
 	 */
-    TIM15->PSC = 64;  // Set prescale value
-    TIM15->ARR = 999;  // Set reload value
+    TIM16->PSC = 64;  // Set prescale value
+    TIM16->ARR = 999;  // Set reload value
 
-    TIM15->DIER |= 1;
-    NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 2);
-    NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
+    TIM16->DIER |= 1;
+    NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 2);
+    NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
 
     // Enable the timer
-    TIM15->CR1 |= TIM_CR1_CEN;  // Set the counter enable bit
+    TIM16->CR1 |= TIM_CR1_CEN;  // Set the counter enable bit
 }
 
 

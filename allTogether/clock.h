@@ -13,8 +13,8 @@
 
 volatile uint32_t counter;
 
-void TIM1_BRK_TIM15_IRQHandler(void);
-void configureTimer15();
+void TIM1_UP_TIM16_IRQHandler(void);
+void configureTimer1();
 
 void initialiseTimer2();
 void setBuzzerPin();
