@@ -1,0 +1,9 @@
+#insert into you drawEnemy(vector_t *enemy) function
+
+gotoxy(xcoo,ycoo);
+puts("  ___  ");
+gotoxy(xcoo,ycoo+1);
+puts(" (0 0) ");
+gotoxy(xcoo,ycoo+2);
+puts(" /"|""\\ ");
+	
